@@ -1,44 +1,58 @@
 package edu.gmu.cs321;
 
-public class Immigrant {
-    private String aNum;
-    private String name;
-    private int age;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Immigrant extends Person {
+    private String aNumberImm;
+    private String dob;
+    private List<String> relatives;
 
     // Constructor
-    public Immigrant(String aNum, String name, int age) {
-        this.aNum = aNum;
-        this.name = name;
-        this.age = age;
+    public Immigrant(String id, String firstName, String lastName, String aNumberImm, String dob) {
+        super(id, firstName, lastName);
+        this.aNumberImm = aNumberImm;
+        this.dob = dob;
+        this.relatives = new ArrayList<>();
     }
 
-    // Method to check if A-Number is valid (A-Number starts with 'A' and has 9 digits)
-    public static boolean checkANum(String anumid) {
-        return anumid.matches("A\\d{9}");
+    // Method to add an immigrant (example functionality)
+    public void addImmigrant(String aNumber, String name, int age) {
+        // Implementation for adding immigrant can be more complex
+        // Here, it's just an example
     }
 
-    // Method to check if immigrant is an adult (18 or older)
-    public boolean isAdult() {
-        return this.age >= 18;
+    // Method to check if an immigrant exists based on A-Number
+    public boolean immigrantExist(String aNumber) {
+        return this.aNumberImm.equals(aNumber);
     }
 
-    // Method to check if the name is valid (should not be empty or null)
-    public boolean isValidName() {
-        return this.name != null && !this.name.trim().isEmpty();
+    // Method to list all relatives
+    public List<String> listRelatives() {
+        return new ArrayList<>(this.relatives);
     }
 
-    // Getter for the A-Number
-    public String getaNum() {
-        return this.aNum;
+    // Method to add a relative
+    public void addRelative(String relativeName) {
+        if (relativeName != null && !relativeName.trim().isEmpty()) {
+            this.relatives.add(relativeName);
+        }
     }
 
-    // Getter for the name
-    public String getName() {
-        return this.name;
+    // Getters and setters
+    public String getANumberImm() {
+        return aNumberImm;
     }
 
-    // Getter for the age
-    public int getAge() {
-        return this.age;
+    public void setANumberImm(String aNumberImm) {
+        this.aNumberImm = aNumberImm;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
     }
 }

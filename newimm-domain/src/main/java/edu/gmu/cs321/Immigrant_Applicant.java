@@ -3,13 +3,13 @@ package edu.gmu.cs321;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Immigrant extends Person {
+public class Immigrant_Applicant extends Person {
     private String aNumberImm;
     private String dob;
     private List<String> relatives;
 
     // Constructor
-    public Immigrant(String id, String firstName, String lastName, String aNumberImm, String dob) {
+    public Immigrant_Applicant(String id, String firstName, String lastName, String aNumberImm, String dob) {
         super(id, firstName, lastName);
         this.aNumberImm = aNumberImm;
         this.dob = dob;

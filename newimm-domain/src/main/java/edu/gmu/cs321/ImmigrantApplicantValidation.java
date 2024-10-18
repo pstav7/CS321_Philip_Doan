@@ -1,10 +1,10 @@
 package edu.gmu.cs321;
 
-public class ImmigrantValidation {
+public class ImmigrantApplicantValidation {
     private boolean validated;
 
     // Constructor
-    public ImmigrantValidation(boolean validated) {
+    public ImmigrantApplicantValidation(boolean validated) {
         this.validated = validated;
     }
 

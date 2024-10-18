@@ -12,7 +12,7 @@ public class NewImmform{
 
     // Method to add a new immigration form
     public void addNewImmForm(String formID, String dateMade) {
-        // Implementation can be based on adding to a collection or database
+        // add new immigrant form logic here
     }
 
     // Getters and setters

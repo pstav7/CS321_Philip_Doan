@@ -7,7 +7,7 @@ public class PersonTest {
 
     @Test
     public void testPersonCreation() {
-        Person person = new Person("1", "John", "Doe");
+        person person = new person("1", "John", "Doe");
         assertEquals("1", person.getId());
         assertEquals("John", person.getFirstName());
         assertEquals("Doe", person.getLastName());
@@ -15,7 +15,7 @@ public class PersonTest {
 
     @Test
     public void testSetters() {
-        Person person = new Person("1", "John", "Doe");
+        person person = new person("1", "John", "Doe");
         person.setFirstName("Jane");
         person.setLastName("Smith");
         person.setId("2");

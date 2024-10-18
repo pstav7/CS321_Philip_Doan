@@ -16,13 +16,13 @@ public class Workflow {
 
     // Method to add a workflow item
     public String addWFItem(String formID, String nextStep) {
-        // Add workflow item logic
+        // Add workflow item logic here
         return formID;
     }
 
     // Method to get the next item in the workflow
     public String getNextItem(String nextStep) {
-        // Logic for retrieving next item
+        // Logic for retrieving next item here
         return formID;
     }
 

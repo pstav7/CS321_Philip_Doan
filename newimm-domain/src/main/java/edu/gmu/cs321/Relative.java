@@ -10,7 +10,7 @@ public class Relative {
 
     // Method to add a relative
     public void addRelative(String relative) {
-        // Implementation depends on how relatives are managed
+        // add relative logic here
     }
 
     // Getter and setter

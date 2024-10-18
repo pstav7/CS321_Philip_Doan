@@ -9,8 +9,8 @@ public class DEImmScreenTest {
     public void testDisplayDEScreen() {
         DEImmScreen screen = new DEImmScreen();
         // You can add test logic here based on the implementation of displayDEScreen()
-        // For now, this test is just a placeholder.
+        // For now, this test is just a placeholder
         screen.displayDEScreen();
-        assertTrue(true); // Placeholder assertion
+        assertTrue(true); 
     }
 }

@@ -16,7 +16,7 @@ public class ImmigrantApplicantValidationTest {
     @Test
     public void testValidateNewImm() {
         ImmigrantApplicantValidation validation = new ImmigrantApplicantValidation(false);
-        // Assuming the validateNewImm method logic sets the status
+        //validateNewImm method logic sets the status
         assertFalse(validation.validateNewImm());
     }
 }

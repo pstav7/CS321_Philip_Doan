@@ -3,7 +3,7 @@ package edu.gmu.cs321;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Immigrant_Applicant extends Person {
+public class Immigrant_Applicant extends person {
     private String aNumberImm;
     private String dob;
     private List<String> relatives;
@@ -18,8 +18,7 @@ public class Immigrant_Applicant extends Person {
 
     // Method to add an immigrant (example functionality)
     public void addImmigrant(String aNumber, String name, int age) {
-        // Implementation for adding immigrant can be more complex
-        // Here, it's just an example
+        // add immigrant logic
     }
 
     // Method to check if an immigrant exists based on A-Number

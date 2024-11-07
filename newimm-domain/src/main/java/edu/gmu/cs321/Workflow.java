@@ -58,4 +58,16 @@ public class Workflow {
     public void setFinished(boolean finished) {
         this.finished = finished;
     }
+
+
+    /**
+     * Return true if updating Workflow Item is successful.
+     * Else return false if not.
+     */
+    public boolean UpdateWFItem(String wfid, String nextID) {
+        if(wfid == null  || nextID == null) {return false;}
+        this.wfid = wfid;
+        this.nextID = nextID;
+        return false;
+    }
 }

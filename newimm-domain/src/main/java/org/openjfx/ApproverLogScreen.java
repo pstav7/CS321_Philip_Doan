@@ -26,22 +26,22 @@ public class ApproverLogScreen extends Application {
         loginButton.setOnAction(e -> {
             String username = usernameField.getText();
             String password = passwordField.getText();
-
+        
             if ("approver".equals(username) && "password2".equals(password)) {
                 primaryStage.close(); // Close login screen
                 
                 // Fetch values dynamically
                 String immigrantANumber = SharedData.getInstance().getImmigrantANumber();
                 String relativeANumber = SharedData.getInstance().getRelativeANumber();
-
-                Platform.runLater(() -> {
-                    ApproverUI approverUI = new ApproverUI();
-                    approverUI.openApproverScreen(immigrantANumber, relativeANumber); // Pass dynamic values
-                });
+        
+                // Create an instance of ApproverUI and call openApproverScreen with necessary data
+                ApproverUI approverUI = new ApproverUI();
+                approverUI.openApproverScreen(immigrantANumber, relativeANumber);
             } else {
                 showAlert("Invalid Login", "Incorrect username or password.");
             }
         });
+        
 
         VBox layout = new VBox(10, usernameField, passwordField, loginButton);
         layout.setStyle("-fx-padding: 20;");
@@ -59,6 +59,6 @@ public class ApproverLogScreen extends Application {
     }
 
     public static void main(String[] args) {
-        launch(args);
+        launch(args);  // Launch the JavaFX application
     }
 }

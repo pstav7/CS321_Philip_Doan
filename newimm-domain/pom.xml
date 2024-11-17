@@ -42,7 +42,14 @@
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
-            <version>10.2.1.jre11</version> <!-- Ensure this version aligns with your JDK version -->
+            <version>10.2.1.jre11</version>
+        </dependency>
+
+        <!-- Workflow dependency -->
+        <dependency>
+            <groupId>com.cs321</groupId>
+            <artifactId>Workflow</artifactId>
+            <version>1.0</version>
         </dependency>
     </dependencies>
 
@@ -67,7 +74,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.openjfx.App</mainClass>
+                            <mainClass>org.openjfx.WorkFlowScreen</mainClass> <!-- Updated this -->
                         </manifest>
                     </archive>
                 </configuration>
@@ -79,7 +86,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>org.openjfx.App</mainClass>
+                    <mainClass>org.openjfx.WorkFlowScreen</mainClass> <!-- Updated this -->
                 </configuration>
             </plugin>
         </plugins>

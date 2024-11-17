@@ -2,25 +2,39 @@ package org.openjfx;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class App extends Application {
+public class App extends Application { // Corrected class declaration
 
     @Override
     public void start(Stage stage) {
-        // Connect to the database when the application starts
-        DatabaseConnector.connect();
-
-        // Display a message to indicate the database connection
-        var label = new Label("Database connected!");
-        var scene = new Scene(new StackPane(label), 640, 480);
-        stage.setScene(scene);
-        stage.show();
+        try {
+            if (DatabaseConnector.getConnection() != null) {
+                Label label = new Label();
+                StackPane root = new StackPane(label);
+                Scene scene = new Scene(root, 640, 480);
+                stage.setScene(scene);
+                stage.setTitle("Database Connection");
+                stage.show();
+            } else {
+                throw new RuntimeException("Database connection failed!");
+            }
+        } catch (Exception e) {
+            // Show error in an alert dialog
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Database Error");
+            alert.setHeaderText("Database Connection Failed");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
-        Application.launch(Login.class, args);
+        launch(args); // Correctly call launch() here
     }
 }

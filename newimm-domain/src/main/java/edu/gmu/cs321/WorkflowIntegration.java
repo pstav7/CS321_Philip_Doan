@@ -1,56 +1,92 @@
 package edu.gmu.cs321;
 
-import com.cs321.Workflow;
-import java.sql.SQLException;
-import org.openjfx.WorkflowDatabase;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WorkflowIntegration {
-    private Workflow workflow;
 
-    // Constructor initializes the Workflow object
+    // Simulated storage for forms (in place of a database)
+    private Map<String, Map<String, String>> formStorage;
+
     public WorkflowIntegration() {
-        this.workflow = new Workflow();
+        formStorage = new HashMap<>();
     }
 
-    // Fetch the next form for review or approval
-    public String reviewNextForm() throws SQLException {
-        // Fetch the next form with status 'Pending' or 'Review'
-        return WorkflowDatabase.getNextWorkflowItem("Pending"); // Modify status as needed
-    }
+    /**
+     * Submits a form with the given details.
+     *
+     * @param immigrantANumber The immigrant's A-Number (String for flexibility).
+     * @param relativeANumber  The relative's A-Number.
+     * @param relativeName     The relative's name.
+     * @throws IllegalArgumentException If any input is invalid.
+     */
+    public void submitForm(String immigrantANumber, String relativeANumber, String relativeName) {
+        validateInput(immigrantANumber, "Immigrant A-Number");
+        validateInput(relativeANumber, "Relative A-Number");
+        validateInput(relativeName, "Relative Name");
 
-    // Submit a form to the workflow and store it in the database
-    public void submitForm(String formId, String nextStep) throws SQLException {
-        try {
-            // Check if the form already exists in the workflow_forms table
-            if (WorkflowDatabase.doesFormExist(Integer.parseInt(formId))) {
-                System.out.println("Form with ID " + formId + " already exists.");
-                return;
-            }
-
-            // Add the form to the workflow system
-            int workflowResult = workflow.AddWFItem(Integer.parseInt(formId), nextStep);
-            if (workflowResult == 0) {
-                // If successful, store the form in the database
-                WorkflowDatabase.addWorkflowItem(formId, nextStep);
-                System.out.println("Form successfully added to workflow.");
-            } else {
-                System.err.println("Failed to add form. API returned code: " + workflowResult);
-                throw new IllegalArgumentException("Error adding to Workflow API: Code " + workflowResult);
-            }
-        } catch (Exception e) {
-            System.err.println("Exception during form submission: " + e.getMessage());
-            e.printStackTrace();
+        if (formStorage.containsKey(immigrantANumber)) {
+            throw new IllegalArgumentException("Form with this Immigrant A-Number already exists.");
         }
+
+        // Save form details in storage
+        Map<String, String> formDetails = new HashMap<>();
+        formDetails.put("Relative A-Number", relativeANumber);
+        formDetails.put("Relative Name", relativeName);
+        formStorage.put(immigrantANumber, formDetails);
+
+        System.out.println("Form submitted successfully.");
+        System.out.println("Immigrant A-Number: " + immigrantANumber);
+        System.out.println("Relative A-Number: " + relativeANumber);
+        System.out.println("Relative Name: " + relativeName);
     }
 
-    // Update form status (e.g., from 'Pending' to 'Reviewed' or 'Approved')
-    public void updateFormStatus(String formId, String newStatus) throws SQLException {
-        try {
-            WorkflowDatabase.updateWorkflowStatus(Integer.parseInt(formId), newStatus);
-            System.out.println("Form status updated to: " + newStatus);
-        } catch (SQLException e) {
-            System.err.println("Error updating form status: " + e.getMessage());
-            e.printStackTrace();
+    /**
+     * Fetches the next form in the storage (for demonstration, retrieves any form).
+     *
+     * @return Details of the next form to be processed.
+     */
+    public String fetchNextForm() {
+        if (formStorage.isEmpty()) {
+            return "No forms available for processing.";
+        }
+
+        // Fetch the first entry in the form storage
+        Map.Entry<String, Map<String, String>> entry = formStorage.entrySet().iterator().next();
+        String immigrantANumber = entry.getKey();
+        Map<String, String> formDetails = entry.getValue();
+
+        return "Immigrant A-Number: " + immigrantANumber + "\n"
+                + "Relative A-Number: " + formDetails.get("Relative A-Number") + "\n"
+                + "Relative Name: " + formDetails.get("Relative Name");
+    }
+
+    /**
+     * Updates the status of a form (e.g., approving or rejecting).
+     *
+     * @param immigrantANumber The immigrant's A-Number.
+     * @param status           The new status of the form.
+     * @throws IllegalArgumentException If the form does not exist.
+     */
+    public void updateFormStatus(String immigrantANumber, String status) {
+        if (!formStorage.containsKey(immigrantANumber)) {
+            throw new IllegalArgumentException("No form found with this Immigrant A-Number.");
+        }
+
+        // Update status logic (e.g., logging for now)
+        System.out.println("Status of Immigrant A-Number " + immigrantANumber + " updated to: " + status);
+    }
+
+    /**
+     * Validates input to ensure it is not null or empty.
+     *
+     * @param input The input to validate.
+     * @param fieldName The name of the field for error messages.
+     * @throws IllegalArgumentException If the input is invalid.
+     */
+    private void validateInput(String input, String fieldName) {
+        if (input == null || input.trim().isEmpty()) {
+            throw new IllegalArgumentException(fieldName + " cannot be empty.");
         }
     }
 }

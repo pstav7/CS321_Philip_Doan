@@ -1,9 +1,11 @@
 package org.openjfx;
 
-import edu.gmu.cs321.WorkflowIntegration;
+import edu.gmu.cs321.WorkflowIntegration; // Ensure to import WorkflowIntegration
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -12,67 +14,96 @@ public class WorkFlowScreen extends Application {
 
     @Override
     public void start(Stage stage) {
-        // Create UI components
-        TextField formIdField = new TextField();
-        formIdField.setPromptText("Form ID");
+        // Immigrant Details section
+        Label immigrantLabel = new Label("Immigrant Details");
+        immigrantLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 10px;");
 
-        // ComboBox for selecting the next step in the workflow
-        ComboBox<String> nextStepDropdown = new ComboBox<>();
-        nextStepDropdown.getItems().addAll("Review", "Approve", "Reject");
-        nextStepDropdown.setPromptText("Select Next Step");
+        // Immigrant fields
+        TextField immigrantANumberField = new TextField();
+        immigrantANumberField.setPromptText("Immigrant A-Number");
+        TextField immigrantNameField = new TextField();
+        immigrantNameField.setPromptText("Immigrant Name");
+        TextField dobField = new TextField();
+        dobField.setPromptText("Date of Birth (MM/DD/YYYY)");
 
+        // Relative Details section
+        Label relativeLabel = new Label("Relative Details");
+        relativeLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 10px;");
+
+        // Relative fields
+        TextField relativeANumberField = new TextField();
+        relativeANumberField.setPromptText("Relative A-Number");
+
+        // Feedback Label
+        Label feedbackLabel = new Label();
+        feedbackLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+
+        // Buttons
         Button submitButton = new Button("Submit Form");
+        submitButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10px;");
         submitButton.setOnAction(e -> {
-            String formId = formIdField.getText();
-            String nextStep = nextStepDropdown.getValue(); // Get selected next step
+            String immigrantANumber = immigrantANumberField.getText();
+            String relativeANumber = relativeANumberField.getText();
 
-            // Validate formId and nextStep inputs
-            if (formId.isEmpty() || !formId.matches("\\d+")) {
-                System.err.println("Invalid Form ID. Please enter a valid number.");
-                return;
-            }
-            if (nextStep == null) {
-                System.err.println("Please select a valid next step.");
+            // Validate the input fields
+            if (immigrantANumber.isEmpty() || relativeANumber.isEmpty() || !dobField.getText().matches("\\d{2}/\\d{2}/\\d{4}")) {
+                feedbackLabel.setText("Please provide valid details.");
+                feedbackLabel.setStyle("-fx-text-fill: red;");
                 return;
             }
 
+            // Save data to SharedData for later use
+            SharedData.getInstance().setImmigrantANumber(immigrantANumber);
+            SharedData.getInstance().setRelativeANumber(relativeANumber);
+
+            // Simulate form submission logic
             try {
-                workFlowIntegration.submitForm(formId, nextStep);
-                System.out.println("Form submitted successfully.");
+                workFlowIntegration.submitForm(immigrantANumber, relativeANumber, immigrantNameField.getText());
+                feedbackLabel.setText("Form submitted successfully.");
+                feedbackLabel.setStyle("-fx-text-fill: green;");
             } catch (Exception ex) {
-                System.err.println("Error submitting form: " + ex.getMessage());
-                ex.printStackTrace();
+                feedbackLabel.setText("Error submitting form: " + ex.getMessage());
+                feedbackLabel.setStyle("-fx-text-fill: red;");
             }
         });
 
-        Button fetchButton = new Button("Fetch Next Form");
-        fetchButton.setOnAction(e -> {
-            try {
-                String nextFormId = workFlowIntegration.reviewNextForm();
-                if (nextFormId != null) {
-                    formIdField.setText(nextFormId);
-                    System.out.println("Next form to process: " + nextFormId);
-
-                    // Update the status of the form to 'Reviewing' when fetched
-                    workFlowIntegration.updateFormStatus(nextFormId, "Reviewing");
-
-                } else {
-                    System.out.println("No forms to process.");
-                }
-            } catch (Exception ex) {
-                System.err.println("Error fetching next form: " + ex.getMessage());
-                ex.printStackTrace();
-            }
+        Button clearButton = new Button("Clear");
+        clearButton.setStyle("-fx-background-color: #FF5722; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10px;");
+        clearButton.setOnAction(e -> {
+            immigrantANumberField.clear();
+            immigrantNameField.clear();
+            dobField.clear();
+            relativeANumberField.clear();
+            feedbackLabel.setText("");
         });
 
-        // Layout adjustments
-        VBox layout = new VBox(10, formIdField, nextStepDropdown, submitButton, fetchButton);
-        layout.setStyle("-fx-background-color: #f0f0f0; -fx-padding: 20px;");
-        layout.setPrefWidth(300);
-        layout.setPrefHeight(200);
+        // Layout for immigrant details
+        GridPane immigrantDetailsGrid = new GridPane();
+        immigrantDetailsGrid.setVgap(10);
+        immigrantDetailsGrid.setHgap(10);
+        immigrantDetailsGrid.add(new Label("Immigrant A-Number:"), 0, 0);
+        immigrantDetailsGrid.add(immigrantANumberField, 1, 0);
+        immigrantDetailsGrid.add(new Label("Immigrant Name:"), 0, 1);
+        immigrantDetailsGrid.add(immigrantNameField, 1, 1);
+        immigrantDetailsGrid.add(new Label("Date of Birth:"), 0, 2);
+        immigrantDetailsGrid.add(dobField, 1, 2);
 
-        // Set scene and stage
-        Scene scene = new Scene(layout);
+        // Layout for relative details
+        GridPane relativeDetailsGrid = new GridPane();
+        relativeDetailsGrid.setVgap(10);
+        relativeDetailsGrid.setHgap(10);
+        relativeDetailsGrid.add(new Label("Relative A-Number:"), 0, 0);
+        relativeDetailsGrid.add(relativeANumberField, 1, 0);
+
+        // Buttons layout
+        HBox buttonsBox = new HBox(15, submitButton, clearButton);
+        buttonsBox.setStyle("-fx-padding: 10px; -fx-alignment: center;");
+
+        // Main layout
+        VBox layout = new VBox(20, immigrantLabel, immigrantDetailsGrid, relativeLabel, relativeDetailsGrid, buttonsBox, feedbackLabel);
+        layout.setStyle("-fx-padding: 20px; -fx-alignment: center; -fx-background-color: #f0f0f0;");
+
+        Scene scene = new Scene(layout, 600, 400);
         stage.setScene(scene);
         stage.setTitle("Workflow Manager");
         stage.show();

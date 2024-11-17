@@ -74,7 +74,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.openjfx.WorkFlowScreen</mainClass> <!-- Updated this -->
+                            <mainClass>org.openjfx.WorkFlowScreen</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -86,7 +86,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>org.openjfx.WorkFlowScreen</mainClass> <!-- Updated this -->
+                    <mainClass>org.openjfx.MainLauncher</mainClass>
                 </configuration>
             </plugin>
         </plugins>

@@ -14,6 +14,9 @@ public class Workflow {
         this.finished = finished;
     }
 
+    // Default Constructor for Workflow Integration
+    public Workflow() {}
+
     // Method to add a workflow item
     public String addWFItem(String formID, String nextStep) {
         // Add workflow item logic here
